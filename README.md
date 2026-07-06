@@ -1,4 +1,26 @@
-# UNIT3D Stats
+[![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua/)
+
+<p align="center">
+  <img src="custom_components/unit3d_stats/brand/icon.png" alt="UNIT3D Stats" width="128" />
+</p>
+
+<h1 align="center">UNIT3D Stats</h1>
+
+<p align="center">
+
+[![Validate](https://github.com/samokisha/ha-unit3d-stats/actions/workflows/validate.yml/badge.svg)](https://github.com/samokisha/ha-unit3d-stats/actions/workflows/validate.yml)
+[![Lint](https://github.com/samokisha/ha-unit3d-stats/actions/workflows/lint.yml/badge.svg)](https://github.com/samokisha/ha-unit3d-stats/actions/workflows/lint.yml)
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![GitHub Release](https://img.shields.io/github/v/release/samokisha/ha-unit3d-stats?display_name=tag&sort=semver)](https://github.com/samokisha/ha-unit3d-stats/releases)
+[![License](https://img.shields.io/github/license/samokisha/ha-unit3d-stats)](./LICENSE)
+
+</p>
+
+> [!NOTE]
+> This integration is not affiliated with UNIT3D or any specific tracker. It reads only your own profile statistics from your tracker's REST API.
+
+> [!TIP]
+> Документація також доступна [українською 🇺🇦](./README.uk.md).
 
 A Home Assistant custom integration that polls a UNIT3D-engine private tracker's API endpoint and exposes your profile statistics as sensors, including upload/download stats, seeding activity, and more.
 
@@ -19,7 +41,27 @@ To use this integration, you need an API key from your UNIT3D tracker:
 
 ## Installation
 
-### Step 1: Copy the Integration
+### Option A: HACS (recommended)
+
+1. Click the button below to open HACS and add this repository:
+
+   [![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=samokisha&repository=ha-unit3d-stats&category=integration)
+
+2. Install the **UNIT3D Stats** integration from HACS, then restart Home Assistant.
+3. Click the button below to start adding the integration:
+
+   [![Add Integration](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=unit3d_stats)
+
+#### Manual HACS custom repository
+
+If the button above doesn't work in your setup:
+
+1. Open **HACS → Integrations**
+2. Click the three-dot menu in the top right → **Custom repositories**
+3. Add `https://github.com/samokisha/ha-unit3d-stats` with category **Integration**
+4. Find and install **UNIT3D Stats**, then restart Home Assistant
+
+### Option B: Manual installation
 
 1. Download or clone the [`ha-unit3d-stats`](https://github.com/samokisha/ha-unit3d-stats) repository
 2. Copy the `custom_components/unit3d_stats` directory into your Home Assistant `config/custom_components/` folder
@@ -116,7 +158,8 @@ This uses `ruff` to check formatting and code style.
 
 - **Personal stats only**: The API endpoint only returns statistics for the account owner associated with the API token. You cannot use this integration to monitor other users' accounts.
 - **Rate limits**: The default update interval is 1 hour to respect tracker rate limits. If you experience rate-limit errors, increase the interval further.
-- **HACS**: This integration is not currently published to HACS. Install manually by copying the `custom_components/unit3d_stats` directory as described above.
+- **HTTP vs HTTPS**: The tracker URL should use `https`. Plain `http` is accepted automatically only for local/trusted hosts (LAN, loopback, Tailscale); for a public `http` address you must tick the **Allow HTTP without TLS** option in the setup form.
+- **HACS**: This integration is available as a HACS custom repository (see Installation above). It is not yet part of the default HACS store.
 
 ## Troubleshooting
 
@@ -133,6 +176,7 @@ If you see a connection error:
 - Verify the tracker base URL is correct (e.g., `https://tracker.example.com` without trailing slash)
 - Check that the tracker is online and accessible from your Home Assistant instance
 - Ensure your network or firewall does not block outbound HTTPS requests to the tracker
+- If you're using a plain `http` URL for a non-local host, tick **Allow HTTP without TLS** in the setup form, or switch to `https`
 
 ### No Sensors Appearing
 
@@ -144,3 +188,4 @@ After adding the integration:
 ## Contributing
 
 Contributions are welcome! Please ensure all changes pass linting (`scripts/lint`) and any existing tests before submitting a pull request.
+</content>

@@ -5,5 +5,5 @@ homeassistant==2026.3.2
 # homeassistant pin (see homeassistant/components/frontend/manifest.json).
 home-assistant-frontend==20260312.0
 pip>=21.3.1
-pytest-homeassistant-custom-component==0.13.318
+pytest-homeassistant-custom-component==0.13.345
 ruff==0.15.7

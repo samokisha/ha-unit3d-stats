@@ -70,11 +70,11 @@ def _entity_id_by_key(hass: HomeAssistant, entry: MockConfigEntry) -> dict[str, 
     }
 
 
-async def test_infinite_ratio_is_shown_not_dropped(
+async def test_infinite_ratio_numeric_is_zero(
     hass: HomeAssistant,
     aioclient_mock: AiohttpClientMocker,
 ) -> None:
-    """Test that an unbounded ratio surfaces the infinite marker, not unknown."""
+    """Test that an unbounded ratio maps the numeric sensor to 0, not unknown."""
     aioclient_mock.get(_USER_ENDPOINT, json={**MOCK_USER_RESPONSE, "ratio": "∞"})
     entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG)
     entry.add_to_hass(hass)
@@ -84,7 +84,52 @@ async def test_infinite_ratio_is_shown_not_dropped(
 
     ratio_state = hass.states.get(_entity_id_by_key(hass, entry)["ratio"])
     assert ratio_state is not None
-    assert ratio_state.state == "∞"
+    assert float(ratio_state.state) == 0
+
+
+async def test_ratio_display_disabled_by_default(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+) -> None:
+    """Test that the ratio_display sensor exists but is disabled by default."""
+    aioclient_mock.get(_USER_ENDPOINT, json=MOCK_USER_RESPONSE)
+    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG)
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    registry = er.async_get(hass)
+    entity_id = _entity_id_by_key(hass, entry)["ratio_display"]
+    entity_entry = registry.async_get(entity_id)
+    assert entity_entry is not None
+    assert entity_entry.disabled_by is not None
+    assert hass.states.get(entity_id) is None
+
+
+async def test_ratio_display_shows_marker_when_enabled(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+) -> None:
+    """Test that ratio_display mirrors the tracker's infinite marker when enabled."""
+    infinite_response = {**MOCK_USER_RESPONSE, "ratio": "∞"}
+    aioclient_mock.get(_USER_ENDPOINT, json=infinite_response)
+    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG)
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    registry = er.async_get(hass)
+    entity_id = _entity_id_by_key(hass, entry)["ratio_display"]
+    registry.async_update_entity(entity_id, disabled_by=None)
+
+    await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+
+    ratio_display_state = hass.states.get(entity_id)
+    assert ratio_display_state is not None
+    assert ratio_display_state.state == "∞"
 
 
 async def test_non_numeric_field_becomes_unknown(

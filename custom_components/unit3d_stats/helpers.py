@@ -9,7 +9,6 @@ _SIZE_RE = re.compile(r"^\s*([0-9]+(?:\.[0-9]+)?)\s*([A-Za-z]+)\s*$")
 
 # UNIT3D renders an unbounded ratio (zero download) or an unbounded buffer
 # (tracker with no ratio requirement) as this literal string.
-INFINITE = "∞"
 _INFINITE_INPUTS = {"∞", "inf", "infinity"}
 
 
@@ -35,14 +34,12 @@ def parse_size(value: str) -> float:
     return float(number) * factor
 
 
-def parse_ratio(value: str) -> float | str:
+def parse_ratio_numeric(value: str) -> float:
     """
     Convert a UNIT3D ratio string to a float.
 
-    Returns the literal INFINITE marker for an unbounded ratio (which the
-    tracker reports for accounts with zero download) so the sensor mirrors
-    what the tracker shows instead of silently becoming unavailable.
+    Unbounded ratio (zero download) maps to 0.
     """
     if value.strip().lower() in _INFINITE_INPUTS:
-        return INFINITE
+        return 0.0
     return float(value)

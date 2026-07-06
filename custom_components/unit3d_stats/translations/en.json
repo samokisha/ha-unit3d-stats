@@ -46,6 +46,9 @@
       "ratio": {
         "name": "Ratio"
       },
+      "ratio_display": {
+        "name": "Ratio display"
+      },
       "uploaded": {
         "name": "Total uploaded"
       },

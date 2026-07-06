@@ -77,4 +77,6 @@ async def test_update_failure_marks_entities_unavailable(
     entities = er.async_entries_for_config_entry(registry, entry.entry_id)
     assert entities
     for entity in entities:
+        if entity.disabled_by is not None:
+            continue
         assert hass.states.get(entity.entity_id).state == "unavailable"

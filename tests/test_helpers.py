@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from custom_components.unit3d_stats.helpers import INFINITE, parse_ratio, parse_size
+from custom_components.unit3d_stats.helpers import parse_ratio_numeric, parse_size
 
 
 @pytest.mark.parametrize(
@@ -63,18 +63,18 @@ def test_parse_size_invalid(value: str) -> None:
         ("0", 0.0),
     ],
 )
-def test_parse_ratio_finite(value: str, expected: float) -> None:
+def test_parse_ratio_numeric_finite(value: str, expected: float) -> None:
     """Test that a finite ratio string is parsed to a float."""
-    assert parse_ratio(value) == pytest.approx(expected)
+    assert parse_ratio_numeric(value) == pytest.approx(expected)
 
 
 @pytest.mark.parametrize("value", ["∞", "inf", "Inf", "Infinity", " ∞ "])
-def test_parse_ratio_infinite(value: str) -> None:
-    """Test that an unbounded ratio maps to the infinite marker."""
-    assert parse_ratio(value) == INFINITE
+def test_parse_ratio_numeric_infinite_is_zero(value: str) -> None:
+    """Test that an unbounded ratio maps to 0.0."""
+    assert parse_ratio_numeric(value) == 0.0
 
 
-def test_parse_ratio_invalid_raises() -> None:
+def test_parse_ratio_numeric_invalid_raises() -> None:
     """Test that a non-numeric, non-infinite ratio raises ValueError."""
     with pytest.raises(ValueError, match=r".+"):
-        parse_ratio("garbage")
+        parse_ratio_numeric("garbage")

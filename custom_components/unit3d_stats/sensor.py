@@ -14,7 +14,7 @@ from homeassistant.components.sensor import (
 from homeassistant.const import UnitOfInformation
 
 from .entity import Unit3dEntity
-from .helpers import parse_ratio, parse_size
+from .helpers import parse_ratio_numeric, parse_size
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -44,13 +44,21 @@ ENTITY_DESCRIPTIONS = (
         value_fn=lambda data: str(data["group"]),
     ),
     Unit3dSensorEntityDescription(
-        # No state_class: ratio can be infinite (zero download), which the
-        # tracker reports as "∞" — a non-numeric state a measurement sensor
-        # would reject. parse_ratio returns a float or that "∞" marker.
         key="ratio",
         translation_key="ratio",
         icon="mdi:swap-vertical",
-        value_fn=lambda data: parse_ratio(data["ratio"]),
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: parse_ratio_numeric(data["ratio"]),
+    ),
+    Unit3dSensorEntityDescription(
+        # Mirrors exactly what the tracker shows, including the "∞" marker
+        # for zero download, since the primary ratio sensor above maps that
+        # case to 0 to stay numeric. Disabled by default as a secondary view.
+        key="ratio_display",
+        translation_key="ratio_display",
+        icon="mdi:swap-vertical-variant",
+        entity_registry_enabled_default=False,
+        value_fn=lambda data: str(data["ratio"]),
     ),
     Unit3dSensorEntityDescription(
         key="uploaded",

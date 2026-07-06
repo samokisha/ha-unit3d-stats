@@ -1,0 +1,12 @@
+{
+  "domain": "unit3d_stats",
+  "name": "UNIT3D Stats",
+  "codeowners": [
+    "@samokisha"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/samokisha/ha-unit3d-stats",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/samokisha/ha-unit3d-stats/issues",
+  "version": "0.1.0"
+}

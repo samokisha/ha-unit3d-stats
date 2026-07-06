@@ -1,0 +1,65 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Вкажіть базову URL-адресу вашого приватного трекера на движку UNIT3D та API-токен. Токен можна створити на трекері в розділі Settings → API Key.",
+        "data": {
+          "url": "URL трекера",
+          "api_token": "API-токен"
+        }
+      },
+      "reauth_confirm": {
+        "description": "API-токен для цього трекера більше не дійсний. Введіть новий.",
+        "data": {
+          "api_token": "API-токен"
+        }
+      }
+    },
+    "error": {
+      "auth": "Недійсний API-токен.",
+      "connection": "Не вдалося з'єднатися з трекером.",
+      "unknown": "Сталася невідома помилка."
+    },
+    "abort": {
+      "already_configured": "Цей запис уже налаштовано.",
+      "reauth_successful": "Повторну автентифікацію виконано успішно."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "update_interval": "Інтервал оновлення (хвилини)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "ratio": {
+        "name": "Рейтинг"
+      },
+      "uploaded": {
+        "name": "Всього віддано"
+      },
+      "downloaded": {
+        "name": "Всього завантажено"
+      },
+      "buffer": {
+        "name": "Буфер"
+      },
+      "seeding": {
+        "name": "На роздачі"
+      },
+      "leeching": {
+        "name": "Завантажується"
+      },
+      "seedbonus": {
+        "name": "Бонусні бали"
+      },
+      "hit_and_runs": {
+        "name": "Hit and run"
+      }
+    }
+  }
+}

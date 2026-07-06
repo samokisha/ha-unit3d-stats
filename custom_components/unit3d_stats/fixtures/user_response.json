@@ -1,0 +1,12 @@
+{
+  "username": "mockuser",
+  "group": "Member",
+  "uploaded": "1.50 TiB",
+  "downloaded": "512.00 GiB",
+  "ratio": "3",
+  "buffer": "1.00 TiB",
+  "seeding": 42,
+  "leeching": 1,
+  "seedbonus": "12345.67",
+  "hit_and_runs": 0
+}

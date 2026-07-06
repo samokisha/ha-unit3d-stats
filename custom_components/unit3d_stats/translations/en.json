@@ -1,0 +1,65 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Enter the base URL of your UNIT3D private tracker and an API token. You can generate a token on the tracker under Settings → API Key.",
+        "data": {
+          "url": "Tracker URL",
+          "api_token": "API token"
+        }
+      },
+      "reauth_confirm": {
+        "description": "The API token for this tracker is no longer valid. Enter a new one.",
+        "data": {
+          "api_token": "API token"
+        }
+      }
+    },
+    "error": {
+      "auth": "Invalid API token.",
+      "connection": "Cannot connect to the tracker.",
+      "unknown": "Unknown error occurred."
+    },
+    "abort": {
+      "already_configured": "This entry is already configured.",
+      "reauth_successful": "Re-authentication was successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "update_interval": "Update interval (minutes)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "ratio": {
+        "name": "Ratio"
+      },
+      "uploaded": {
+        "name": "Total uploaded"
+      },
+      "downloaded": {
+        "name": "Total downloaded"
+      },
+      "buffer": {
+        "name": "Buffer"
+      },
+      "seeding": {
+        "name": "Seeding count"
+      },
+      "leeching": {
+        "name": "Leeching count"
+      },
+      "seedbonus": {
+        "name": "Bonus points"
+      },
+      "hit_and_runs": {
+        "name": "Hit and runs"
+      }
+    }
+  }
+}

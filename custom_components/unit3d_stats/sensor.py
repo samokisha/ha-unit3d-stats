@@ -158,5 +158,5 @@ class Unit3dSensor(Unit3dEntity, SensorEntity):
         """Return the native value of the sensor."""
         try:
             return self.entity_description.value_fn(self.coordinator.data)
-        except KeyError, ValueError, TypeError:
+        except (KeyError, ValueError, TypeError):
             return None

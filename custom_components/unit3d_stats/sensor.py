@@ -28,6 +28,10 @@ if TYPE_CHECKING:
 
 _BYTES_PER_GIBIBYTE = 1024**3
 
+# Errors a value_fn may raise for a missing or malformed field; kept as a named
+# tuple so the formatter never rewrites an inline multi-type `except` clause.
+_VALUE_FN_ERRORS = (KeyError, ValueError, TypeError)
+
 
 @dataclass(frozen=True, kw_only=True)
 class Unit3dSensorEntityDescription(SensorEntityDescription):
@@ -158,5 +162,5 @@ class Unit3dSensor(Unit3dEntity, SensorEntity):
         """Return the native value of the sensor."""
         try:
             return self.entity_description.value_fn(self.coordinator.data)
-        except KeyError, ValueError, TypeError:
+        except _VALUE_FN_ERRORS:
             return None

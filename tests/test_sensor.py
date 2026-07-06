@@ -55,3 +55,7 @@ async def test_sensor_states_reflect_user_response(
         state = hass.states.get(entity_id)
         assert state is not None
         assert float(state.state) == pytest.approx(expected_value)
+
+    group_state = hass.states.get(entity_id_by_key["group"])
+    assert group_state is not None
+    assert group_state.state == MOCK_USER_RESPONSE["group"]

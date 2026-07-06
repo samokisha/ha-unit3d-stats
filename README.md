@@ -43,6 +43,7 @@ The integration exposes the following sensors from your tracker profile:
 
 | Sensor | Key | Unit | Type | Description |
 |--------|-----|------|------|-------------|
+| Group | `group` | — | Text | Your current membership group on the tracker (e.g. `Member`, `Uploader`) |
 | Ratio | `ratio` | — | Measurement | Upload-to-download ratio (e.g., 50.0 = 50:1) |
 | Uploaded | `uploaded` | GiB | Total Increasing | Total amount of data uploaded |
 | Downloaded | `downloaded` | GiB | Total Increasing | Total amount of data downloaded |

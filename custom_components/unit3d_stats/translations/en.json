@@ -36,6 +36,9 @@
   },
   "entity": {
     "sensor": {
+      "group": {
+        "name": "Group"
+      },
       "ratio": {
         "name": "Ratio"
       },

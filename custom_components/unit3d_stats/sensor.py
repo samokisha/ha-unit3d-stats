@@ -38,6 +38,12 @@ class Unit3dSensorEntityDescription(SensorEntityDescription):
 
 ENTITY_DESCRIPTIONS = (
     Unit3dSensorEntityDescription(
+        key="group",
+        translation_key="group",
+        icon="mdi:account-group",
+        value_fn=lambda data: str(data["group"]),
+    ),
+    Unit3dSensorEntityDescription(
         key="ratio",
         translation_key="ratio",
         icon="mdi:swap-vertical",

@@ -2,25 +2,47 @@
 
 from __future__ import annotations
 
-_SIZE_UNITS = {"B": 1, "KiB": 1024, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
+import re
+
+_SIZE_UNITS = {"B": 1, "KIB": 1024, "MIB": 1024**2, "GIB": 1024**3, "TIB": 1024**4}
+_SIZE_RE = re.compile(r"^\s*([0-9]+(?:\.[0-9]+)?)\s*([A-Za-z]+)\s*$")
+
+# UNIT3D renders an unbounded ratio (zero download) or an unbounded buffer
+# (tracker with no ratio requirement) as this literal string.
+INFINITE = "∞"
+_INFINITE_INPUTS = {"∞", "inf", "infinity"}
 
 
 def parse_size(value: str) -> float:
-    """Convert a human-readable size string like '44.95 TiB' to bytes."""
-    parts = value.strip().split()
-    if len(parts) != 2:  # noqa: PLR2004
+    """
+    Convert a human-readable size string like '44.95 TiB' to bytes.
+
+    Accepts an optional space and case-insensitive IEC units (B, KiB, MiB,
+    GiB, TiB). Raises ValueError for any other input, including negative
+    values and the infinite marker.
+    """
+    match = _SIZE_RE.match(value)
+    if match is None:
         msg = f"Invalid size format: {value!r}"
         raise ValueError(msg)
 
-    number, unit = parts
-    if unit not in _SIZE_UNITS:
+    number, unit = match.groups()
+    factor = _SIZE_UNITS.get(unit.upper())
+    if factor is None:
         msg = f"Unknown size unit {unit!r} in {value!r}"
         raise ValueError(msg)
 
-    try:
-        magnitude = float(number)
-    except ValueError as exception:
-        msg = f"Invalid numeric value {number!r} in {value!r}"
-        raise ValueError(msg) from exception
+    return float(number) * factor
 
-    return magnitude * _SIZE_UNITS[unit]
+
+def parse_ratio(value: str) -> float | str:
+    """
+    Convert a UNIT3D ratio string to a float.
+
+    Returns the literal INFINITE marker for an unbounded ratio (which the
+    tracker reports for accounts with zero download) so the sensor mirrors
+    what the tracker shows instead of silently becoming unavailable.
+    """
+    if value.strip().lower() in _INFINITE_INPUTS:
+        return INFINITE
+    return float(value)

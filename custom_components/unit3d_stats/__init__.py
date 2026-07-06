@@ -44,6 +44,7 @@ async def async_setup_entry(
         logger=LOGGER,
         name=DOMAIN,
         update_interval=timedelta(minutes=update_interval_minutes),
+        config_entry=entry,
     )
     entry.runtime_data = Unit3dData(
         client=Unit3dApiClient(

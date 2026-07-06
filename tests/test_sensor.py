@@ -59,3 +59,52 @@ async def test_sensor_states_reflect_user_response(
     group_state = hass.states.get(entity_id_by_key["group"])
     assert group_state is not None
     assert group_state.state == MOCK_USER_RESPONSE["group"]
+
+
+def _entity_id_by_key(hass: HomeAssistant, entry: MockConfigEntry) -> dict[str, str]:
+    """Map each sensor key to its entity id via the entity registry."""
+    registry = er.async_get(hass)
+    return {
+        entity.unique_id.removeprefix(f"{entry.entry_id}_"): entity.entity_id
+        for entity in er.async_entries_for_config_entry(registry, entry.entry_id)
+    }
+
+
+async def test_infinite_ratio_is_shown_not_dropped(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+) -> None:
+    """Test that an unbounded ratio surfaces the infinite marker, not unknown."""
+    aioclient_mock.get(_USER_ENDPOINT, json={**MOCK_USER_RESPONSE, "ratio": "∞"})
+    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG)
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    ratio_state = hass.states.get(_entity_id_by_key(hass, entry)["ratio"])
+    assert ratio_state is not None
+    assert ratio_state.state == "∞"
+
+
+async def test_non_numeric_field_becomes_unknown(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+) -> None:
+    """Test that a malformed numeric field degrades to unknown, not a crash."""
+    aioclient_mock.get(
+        _USER_ENDPOINT,
+        json={**MOCK_USER_RESPONSE, "seedbonus": "not-a-number"},
+    )
+    entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG)
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    entity_ids = _entity_id_by_key(hass, entry)
+    seedbonus_state = hass.states.get(entity_ids["seedbonus"])
+    assert seedbonus_state is not None
+    assert seedbonus_state.state == "unknown"
+    # Other sensors are unaffected by one malformed field.
+    assert hass.states.get(entity_ids["seeding"]).state == "3"

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import functools
 import json
 import os
 import socket
@@ -80,7 +81,10 @@ class Unit3dApiClient:
     async def _async_get_mock_user(self) -> dict[str, Any]:
         """Read the mock user response from the bundled fixture."""
         loop = asyncio.get_running_loop()
-        content = await loop.run_in_executor(None, _FIXTURE_PATH.read_text)
+        content = await loop.run_in_executor(
+            None,
+            functools.partial(_FIXTURE_PATH.read_text, encoding="utf-8"),
+        )
         return json.loads(content)
 
     async def _api_wrapper(
@@ -98,6 +102,9 @@ class Unit3dApiClient:
                     url=url,
                     headers=headers,
                     json=data,
+                    # Never follow redirects: the API is a fixed endpoint and a
+                    # redirect could forward the bearer token to another host.
+                    allow_redirects=False,
                 )
                 _verify_response_or_raise(response)
                 return await response.json()

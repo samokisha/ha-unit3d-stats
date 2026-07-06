@@ -5,7 +5,8 @@
         "description": "Enter the base URL of your UNIT3D private tracker and an API token. You can generate a token on the tracker under Settings → API Key.",
         "data": {
           "url": "Tracker URL",
-          "api_token": "API token"
+          "api_token": "API token",
+          "allow_insecure": "Allow HTTP without TLS (use only on a trusted network or VPN, e.g. LAN or Tailscale)"
         }
       },
       "reauth_confirm": {
@@ -18,11 +19,14 @@
     "error": {
       "auth": "Invalid API token.",
       "connection": "Cannot connect to the tracker.",
+      "invalid_url": "Enter a valid http:// or https:// tracker URL.",
+      "insecure_http": "This is a public HTTP address. Enable the trusted-network option below to allow sending the token without TLS.",
       "unknown": "Unknown error occurred."
     },
     "abort": {
       "already_configured": "This entry is already configured.",
-      "reauth_successful": "Re-authentication was successful."
+      "reauth_successful": "Re-authentication was successful.",
+      "wrong_account": "The new token belongs to a different account. Use a token for the account this entry was set up with."
     }
   },
   "options": {

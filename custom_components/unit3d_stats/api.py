@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import Any
 
 import aiohttp
-import async_timeout
 
 _FIXTURE_PATH = Path(__file__).parent / "fixtures" / "user_response.json"
 
@@ -96,7 +95,7 @@ class Unit3dApiClient:
     ) -> Any:
         """Get information from the API."""
         try:
-            async with async_timeout.timeout(10):
+            async with asyncio.timeout(10):
                 response = await self._session.request(
                     method=method,
                     url=url,

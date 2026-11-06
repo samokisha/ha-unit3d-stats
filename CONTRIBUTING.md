@@ -56,6 +56,8 @@ Home Assistant instance running and already configured with the included
 [`configuration.yaml`](./config/configuration.yaml)
 file.
 
+Run the test suite with `python3 -m pytest`. CI runs it on every pull request.
+
 ## License
 
 By contributing, you agree that your contributions will be licensed under its MIT License.

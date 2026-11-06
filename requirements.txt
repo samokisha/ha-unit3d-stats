@@ -1,4 +1,4 @@
-colorlog==6.10.1
+colorlog==6.12.0
 homeassistant==2026.7.1
 # Pre-install the frontend so `scripts/develop` works offline-ish; HA's runtime
 # installer often times out on this ~114 MB wheel. Keep in sync with the

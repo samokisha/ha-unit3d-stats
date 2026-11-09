@@ -4,6 +4,6 @@ homeassistant==2026.10.4
 # installer often times out on this ~114 MB wheel. Keep in sync with the
 # homeassistant pin (see homeassistant/components/frontend/manifest.json).
 home-assistant-frontend==20260930.5
-pip>=26.2
+pip>=26.3
 pytest-homeassistant-custom-component==0.13.375
 ruff==0.17.4

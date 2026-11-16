@@ -6,4 +6,4 @@ homeassistant==2026.10.4
 home-assistant-frontend==20260930.5
 pip>=26.2
 pytest-homeassistant-custom-component==0.13.375
-ruff==0.17.4
+ruff==0.17.5
